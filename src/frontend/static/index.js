@@ -65,7 +65,11 @@ function Map() {
     }));
 
     map.on('locationfound', function(e) {
-        locate(e.latlng);
+        if (App.url === 'locate') {
+            locate(e.latlng);
+        } else {
+            setUrl('#reload');
+        }
     });
 
     map.on('locationerror', function(e) {
@@ -447,8 +451,7 @@ function getUrl() {
 function getBusRoutesFromUrl(url) {
     var parts = url.split(',');
     return parts.filter(function(item) {
-        return item.length > 0 &&
-            item !== 'locate' && item !== 'reload';
+        return item.length > 0 && item !== 'locate' && item !== 'reload' && item !== 'findme';
     });
 }
 
@@ -519,6 +522,14 @@ function onHashChange() {
             watch: false,
             setView: true,
             maxZoom: 16
+        });
+    } else if (nextUrl === 'findme') {
+        App.url = prevUrl;
+        App.map.leafletMap.locate({
+            watch: false,
+            setView: true,
+            maxZoom: 14,
+            minZoom: 13
         });
     } else if (prevUrl === 'locate') {
         each(toAdd, addRoute);

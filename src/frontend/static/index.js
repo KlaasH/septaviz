@@ -49,7 +49,7 @@ function Map() {
     });
     this.leafletMap = map;
 
-    var baseLayer = new L.TileLayer('//cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png', {
+    var baseLayer = new L.TileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
         subdomains: 'abcd',
         maxZoom: 19
@@ -431,7 +431,7 @@ function parseVehicles(routeNum, data) {
 }
 
 function fetchVehicles(routeNum) {
-    var url = '//www3.septa.org/api/TransitView/?route=' + routeNum;
+    var url = 'https://www3.septa.org/api/TransitView/?route=' + routeNum;
     return fetch(url, { dataType: 'jsonp', cache: false })
         .then(function(data) {
             return parseVehicles(routeNum, data);

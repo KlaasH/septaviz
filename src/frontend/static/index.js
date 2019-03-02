@@ -68,6 +68,11 @@ function Map() {
         if (App.url === 'locate') {
             locate(e.latlng);
         } else {
+            var marker = new L.Marker(e.latlng, {
+                draggable: true,
+                zIndexOffset: 10000
+            });
+            App.map.searchLayer.addLayer(marker);
             setUrl('#reload');
         }
     });

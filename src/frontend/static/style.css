@@ -151,3 +151,7 @@ body {
 .hide {
     display: none;
 }
+
+.leaflet-popup-content {
+    text-align: center;
+}

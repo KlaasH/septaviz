@@ -232,19 +232,27 @@ function getMarkerHtml(loc) {
 }
 
 function getMarkerContent(loc) {
-    var now = new Date();
-    var offsetMs = parseInt(loc.Offset_sec, 10) * 1000;
-    var reportedAt = new Date(loc.createdAt.getTime() - offsetMs);
-    var elapsedSec = Math.round((now.getTime() - reportedAt.getTime()) / 1000);
-    var min = Math.round(elapsedSec / 60);
-    var s;
-    if (min > 1) {
-        s = min === 1 ? '' : 's';
-        return 'Updated ' + min + ' minute' + s + ' ago';
-    } else {
-        s = elapsedSec === 1 ? '' : 's';
-        return 'Updated ' + elapsedSec + ' second' + s + ' ago';
+    function timestamp(loc) {
+
+        var now = new Date();
+        var offsetMs = parseInt(loc.Offset_sec, 10) * 1000;
+        var reportedAt = new Date(loc.createdAt.getTime() - offsetMs);
+        var elapsedSec = Math.round((now.getTime() - reportedAt.getTime()) / 1000);
+        var min = Math.round(elapsedSec / 60);
+        var s;
+        if (min > 1) {
+            s = min === 1 ? '' : 's';
+            return 'Updated ' + min + ' minute' + s + ' ago';
+        } else {
+            s = elapsedSec === 1 ? '' : 's';
+            return 'Updated ' + elapsedSec + ' second' + s + ' ago';
+        }
     }
+    return [
+        timestamp(loc),
+        loc.Direction + ' to ' + loc.destination,
+        loc.late ? ('' + loc.late + ' minute' + (loc.late > 1 ? 's' : '') + ' late') : 'On time',
+    ].join('<br>');
 }
 
 function addVehicles(vehicles) {
@@ -379,9 +387,8 @@ function addRoute(routeNum) {
     fetchVehicles(routeNum)
         .then(function(vehicles) {
             removeVehicles(routeNum);
-            return vehicles;
-        })
-        .then(addVehicles);
+            addVehicles(vehicles);
+        });
 
     return fetchRouteTrace(routeNum)
         .then(addRouteTrace);

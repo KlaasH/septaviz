@@ -422,7 +422,7 @@ function fetch(url, args) {
 }
 
 function fetchRouteTrace(routeNum) {
-    return fetch('static/stops/' + routeNum + '.geojson', { cache: true })
+    return fetch('static/routes/' + routeNum + '.json', { cache: true })
         .then(function(geojson) {
             geojson.routeNum = routeNum;
             return geojson;

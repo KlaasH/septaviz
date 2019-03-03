@@ -443,6 +443,10 @@ function parseVehicles(routeNum, data) {
 }
 
 function fetchVehicles(routeNum) {
+    if (routeNum === 'BSL' || routeNum === 'MFL') {
+        // Don't try to get vehicles for the subways
+        return $.Deferred().resolve([]).promise();
+    }
     var url = 'https://www3.septa.org/api/TransitView/?route=' + routeNum;
     return fetch(url, { dataType: 'jsonp', cache: false })
         .then(function(data) {
